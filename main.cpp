@@ -60,9 +60,8 @@ int main(int argc, char *argv[]) {
           }
           // do stuff with mapData
           Euclidean test (mapData, mapSize);
-          test.getPath();
           
-          Manhattan* man = new Manhattan(mapData,line.size());
+          Manhattan* man = new Manhattan(mapData, mapSize);
         }
       } catch (const exception& e) {
         cerr << "Invalid file format." << endl;
