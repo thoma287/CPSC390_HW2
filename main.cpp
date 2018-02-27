@@ -1,3 +1,24 @@
+/* NxN matrix no greater than 80x80
+i = initial state
+g = goal state
+only options: 4 adjacent moves (i,j-1), (i-1,j), (i,j+1), (i+1,j)
+avoid the + (obstacles)
+ '.' is empty space
+ use o for the the move it does take
+ Strategies include:
+  1. f(N) = Euclidean Distance from N to goal
+      length of straight line between 2 options
+      E((i,j),(i',j')) = sqrt[(i-i')^2+(j-j')^2]
+  2. f(N) = Manhattan Distance
+    length of shortest path obtainable by traversing only in the cardinal
+    directions, ingoring any obstacles, M((i,j),(i',j'))=|i-i'|+|j-j'|
+  3/4. f(N) = g(N)+h(N), where:
+    -g(N) is the cost of the path found so far from the initial node to N
+    -h(N) is: -the Euclidean distance from N to the goal (Strategy 3)
+              -the Manhattan distance to the goal (Strategy 4)
+Cost: for every move +1
+*/
+
 #include <iostream>
 #include <fstream>
 #include <vector>
