@@ -24,6 +24,7 @@ Cost: for every move +1
 #include <vector>
 #include <string>
 #include "Euclidean.cpp"
+#include "Manhattan.cpp"
 
 using namespace std;
 
@@ -60,6 +61,8 @@ int main(int argc, char *argv[]) {
           // do stuff with mapData
           Euclidean test (mapData, mapSize);
           test.getPath();
+          
+          Manhattan* man = new Manhattan(mapData,line.size());
         }
       } catch (const exception& e) {
         cerr << "Invalid file format." << endl;

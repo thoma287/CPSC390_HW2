@@ -2,33 +2,43 @@
   length of shortest path obtainable by traversing only in the cardinal
   directions, ingoring any obstacles, M((i,j),(i',j'))=|i-i'|+|j-j'|*/
 
-using namespace std;
-#include stdio.h
-#include <array>
 
-public class Manhattan{
+#include <stdio.h>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Manhattan{
 
 public:
   char** mapData;
+  int** initial;
+  int** goal;
   Manhattan(vector< vector < char > > inputMap, int mapSize);
   ~Manhattan();
 
-  int* getPath(char arr[][n])();
+  int* getPath(char arr[][n]);
 
   int* getIntial(char arr[][n]);
 
 };
 
-Manhattan(vector< vector < char > > inputMap, int mapSize){
-  self.mapData = new char* [mapSize];
+Manhattan::Manhattan(vector< vector < char > > inputMap, int mapSize){
+  this->mapData = new char* [mapSize];
   for (int i = 0; i < mapSize; ++i) {
-    self.mapData[i] = new char [mapSize];
+    this->mapData[i] = new char [mapSize];
     for (int j = 0; j < mapSize; ++j) {
-      self.mapData[i][j] = inputMap[i][j];
+      this->mapData[i][j] = inputMap[i][j];
+      if(inputMap[i][j] == 'i'){
+        this->initial = inputMap[i][j];
+      }
+      if(inputMap[i][j] == 'g'){
+        this->goal = inputMap[i][j];
+      }
     }
   }
 }
 
-~Manhatten() {
+~Manhattan::Manhattan() {
   delete mapData;
 }
