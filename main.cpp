@@ -23,6 +23,7 @@ Cost: for every move +1
 #include <fstream>
 #include <vector>
 #include <string>
+#include "Euclidean.cpp"
 
 using namespace std;
 
@@ -56,14 +57,9 @@ int main(int argc, char *argv[]) {
               throw 1;
             }
           }
-          cout << "Map loaded successfully!" << endl;
-          for (int i = 0; i < mapSize; ++i) {
-            for (int j = 0; j < mapSize; ++j) {
-              cout << mapData[i][j];
-            }
-            cout << endl;
-          }
-          
+          // do stuff with mapData
+          Euclidean test (mapData, mapSize);
+          test.getPath();
         }
       } catch (const exception& e) {
         cerr << "Invalid file format." << endl;
