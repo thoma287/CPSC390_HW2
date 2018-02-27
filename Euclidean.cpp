@@ -11,7 +11,7 @@ using namespace std;
 class Euclidean {
   public:
     char** mapData;
-    
+
     int mapSize;
 
     Euclidean(vector< vector < char > > inputMap, int mapSize);
