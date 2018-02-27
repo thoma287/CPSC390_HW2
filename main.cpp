@@ -23,6 +23,7 @@ Cost: for every move +1
 #include <fstream>
 #include <vector>
 #include <string>
+#include "Manhattan.cpp"
 
 using namespace std;
 
@@ -63,7 +64,11 @@ int main(int argc, char *argv[]) {
             }
             cout << endl;
           }
-          
+
+          Manhattan* man = new Manhattan(mapData,line.size());
+
+
+
         }
       } catch (const exception& e) {
         cerr << "Invalid file format." << endl;

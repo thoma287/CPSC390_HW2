@@ -1,7 +1,7 @@
-using namespace std;
-#include stdio.h
-#include <array>
 
+#include <stdio.h>
+#include <array>
+using namespace std;
 public class Euclidean{
 public:
   char array<array<char,size>,size> table;
