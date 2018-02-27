@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
             }
             cout << endl;
           }
+          
         }
       } catch (const exception& e) {
         cerr << "Invalid file format." << endl;
