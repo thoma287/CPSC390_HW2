@@ -3,23 +3,37 @@
   directions, ingoring any obstacles, M((i,j),(i',j'))=|i-i'|+|j-j'|*/
 
 
-#include <stdio.h>
+#include <iostream>
 #include <vector>
 #include <string>
+#include <stdlib.h>     /* abs */
+
 using namespace std;
+
+struct state {
+  int x;
+  int y;
+};
+
 
 class Manhattan{
 
 public:
   char** mapData;
-  int** initial;
-  int** goal;
+
   Manhattan(vector< vector < char > > inputMap, int mapSize);
   ~Manhattan();
+  int calcDistance(state initial, state goal);
+  int distance;
+  state initial;
+  state goal;
+  int exes;
+  int whys;
+  vector < state > obstacles;
 
-  int* getPath(char arr[][n]);
+  int* getPath(char** arr);
 
-  int* getIntial(char arr[][n]);
+  int* getIntial(char** arr);
 
 };
 
@@ -29,16 +43,38 @@ Manhattan::Manhattan(vector< vector < char > > inputMap, int mapSize){
     this->mapData[i] = new char [mapSize];
     for (int j = 0; j < mapSize; ++j) {
       this->mapData[i][j] = inputMap[i][j];
-      if(inputMap[i][j] == 'i'){
-        this->initial = inputMap[i][j];
+      if(inputMap[i][j] == 'I'){
+        this->initial.x = j;
+        this->initial.y = i;
+        printf("Inital: (%i,%i)\n", this->initial.x,this->initial.y);
       }
-      if(inputMap[i][j] == 'g'){
-        this->goal = inputMap[i][j];
+
+      if(inputMap[i][j] == 'G'){
+        this->goal.x = j;
+        this->goal.y = i;
+
+        printf("Goal: (%i,%i)\n", this->goal.x,this->goal.y);
       }
+      if(inputMap[i][j] == '+'){
+        state nipple;
+        nipple.x = j;
+        nipple.y = i;
+        this->obstacles.push_back(nipple);
+
+        printf("Obstacle: (%i,%i)\n", nipple.x,nipple.y);
+
+      }
+
     }
   }
-}
 
-~Manhattan::Manhattan() {
+}
+int Manhattan::calcDistance(state initial, state goal){
+  exes = abs(this->goal.x-this->initial.x);
+  whys = abs(this->goal.y-this->initial.y);
+  this->distance = this->exes+this->whys;
+  return this->distance;
+}
+Manhattan::~Manhattan() {
   delete mapData;
 }

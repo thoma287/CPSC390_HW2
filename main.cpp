@@ -21,7 +21,6 @@ Cost: for every move +1
 
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <string>
 #include "Euclidean.cpp"
 #include "Manhattan.cpp"
@@ -60,8 +59,9 @@ int main(int argc, char *argv[]) {
           }
           // do stuff with mapData
           Euclidean test (mapData, mapSize);
-          
-          Manhattan* man = new Manhattan(mapData, mapSize);
+
+          Manhattan* k = new Manhattan(mapData, mapSize);
+          cout << "Distance between inital and goal: " << k->calcDistance(k->initial, k->goal) << endl;
         }
       } catch (const exception& e) {
         cerr << "Invalid file format." << endl;
