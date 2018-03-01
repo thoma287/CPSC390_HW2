@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdlib.h>     /* abs */
+
 using namespace std;
 
 struct state {
@@ -21,9 +23,12 @@ public:
 
   Manhattan(vector< vector < char > > inputMap, int mapSize);
   ~Manhattan();
-
+  int calcDistance(state initial, state goal);
+  int distance;
   state initial;
   state goal;
+  int exes;
+  int whys;
   vector < state > obstacles;
 
   int* getPath(char** arr);
@@ -39,25 +44,24 @@ Manhattan::Manhattan(vector< vector < char > > inputMap, int mapSize){
     for (int j = 0; j < mapSize; ++j) {
       this->mapData[i][j] = inputMap[i][j];
       if(inputMap[i][j] == 'I'){
-        this->initial.x = i;
-        this->initial.y = j;
+        this->initial.x = j;
+        this->initial.y = i;
         printf("Inital: (%i,%i)\n", this->initial.x,this->initial.y);
       }
 
       if(inputMap[i][j] == 'G'){
-        this->goal.x = i;
-        this->goal.y = j;
+        this->goal.x = j;
+        this->goal.y = i;
 
         printf("Goal: (%i,%i)\n", this->goal.x,this->goal.y);
       }
       if(inputMap[i][j] == '+'){
         state nipple;
-        nipple.x = i;
-        nipple.y = j;
+        nipple.x = j;
+        nipple.y = i;
         this->obstacles.push_back(nipple);
 
         printf("Obstacle: (%i,%i)\n", nipple.x,nipple.y);
-
 
       }
 
@@ -65,7 +69,12 @@ Manhattan::Manhattan(vector< vector < char > > inputMap, int mapSize){
   }
 
 }
-
+int Manhattan::calcDistance(state initial, state goal){
+  exes = abs(this->goal.x-this->initial.x);
+  whys = abs(this->goal.y-this->initial.y);
+  this->distance = this->exes+this->whys;
+  return this->distance;
+}
 Manhattan::~Manhattan() {
   delete mapData;
 }

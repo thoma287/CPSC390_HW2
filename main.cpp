@@ -60,7 +60,8 @@ int main(int argc, char *argv[]) {
           // do stuff with mapData
           Euclidean test (mapData, mapSize);
 
-          Manhattan k (mapData, mapSize);
+          Manhattan* k = new Manhattan(mapData, mapSize);
+          cout << "Distance between inital and goal: " << k->calcDistance(k->initial, k->goal) << endl;
         }
       } catch (const exception& e) {
         cerr << "Invalid file format." << endl;
