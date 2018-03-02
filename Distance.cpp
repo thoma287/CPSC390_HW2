@@ -13,51 +13,65 @@ struct point {
   int y;
 };
 
-class Euclidean {
+class Distance {
   public:
+    Distance(char** inputMap, int inputSize, int inputMode);
+    ~Distance();
+
+    bool operator() (const point& lhs, const point& rhs) const
+    {
+      // depending on mode, evaluate lhs and rhs 
+      // if lhs is closer to the goal
+      //   return true
+      // else
+      //   return false
+    }
+
+  private:
     char** mapData;
     int mapSize;
-
+    int mode;
     point current;
     point goal;
 
-    Euclidean(vector< vector < char > > inputMap, int mapSize);
-    ~Euclidean();
+    void loadMap(char** inputMap, int inputSize);
+    double euclidean(char** inputMap, int inputSize);
+    double manhattan(char** inputMap, int inputSize);
 
-    double getDistance();
 };
 
-Euclidean::Euclidean(vector< vector < char > > inputMap, int inputSize){
+Distance::Distance(char** inputMap, int inputSize, int inputMode) {
+  this->loadMap(inputMap, inputSize);
+  this->mode = inputMode;
+}
+
+Distance::~Distance() {
+}
+
+void Distance::loadMap(char** inputMap, int inputSize){
   this->mapSize = inputSize;
-  this->mapData = new char* [inputSize];
+  this->mapData = inputMap;
   for (int i = 0; i < inputSize; ++i) {
-    this->mapData[i] = new char [inputSize];
     for (int j = 0; j < inputSize; ++j) {
-      this->mapData[i][j] = inputMap[i][j];
-      if(inputMap[i][j] == 'O'){
+      if(inputMap[i][j] == 'x'){
         this->current.x = j;
         this->current.y = i;
       }
-      if(inputMap[i][j] == 'G'){
+      if(inputMap[i][j] == 'i'){
         this->goal.x = j;
         this->goal.y = i;
       }
     }
   }
-  this->getPath();
-}
-
-Euclidean::~Euclidean() {
-  delete mapData;
 }
 
 double Euclidean::getDistance(){
   int* hello = new int(5);
   cout << "Map loaded successfully!" << endl;
   cout << " 0123456789" << endl;
-  for (int i = 0; i < mapSize; ++i) {
+  for (int i = 0; i < this->mapSize; ++i) {
     cout << to_string(i);
-    for (int j = 0; j < mapSize; ++j) {
+    for (int j = 0; j < this->mapSize; ++j) {
       cout << mapData[i][j];
     }
     cout << endl;
