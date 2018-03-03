@@ -8,10 +8,6 @@
 
 using namespace std;
 
-struct point {
-  int x;
-  int y;
-};
 
 class Euclidean {
   public:
@@ -34,11 +30,11 @@ Euclidean::Euclidean(vector< vector < char > > inputMap, int inputSize){
     this->mapData[i] = new char [inputSize];
     for (int j = 0; j < inputSize; ++j) {
       this->mapData[i][j] = inputMap[i][j];
-      if(inputMap[i][j] == 'O'){
+      if(inputMap[i][j] == 'o'){
         this->current.x = j;
         this->current.y = i;
       }
-      if(inputMap[i][j] == 'G'){
+      if(inputMap[i][j] == 'g'){
         this->goal.x = j;
         this->goal.y = i;
       }
@@ -62,6 +58,6 @@ double Euclidean::getDistance(){
     }
     cout << endl;
   }
-  printf("Initial: (%i,%i)\nGoal: (%i,%i)\n", this->initial.x, this->initial.y, this->goal.x, this->goal.y);
+  printf("current: (%i,%i)\nGoal: (%i,%i)\n", this->current.x, this->current.y, this->goal.x, this->goal.y);
   return hello;
 }

@@ -22,8 +22,11 @@ class Robot {
     Robot();
     ~Robot();
 
+
     void loadMap(vector< vector < char > > inputMap, int inputSize);
     void run();
+
+    int calcDistance(point initial, point goal);
 
   private:
     char** mapData;
@@ -35,6 +38,15 @@ class Robot {
 };
 
 void Robot::run() {
+  Distance test (this->mapData, this->mapSize, 0);
+  priority_queue<point, test> queue0;
+  Distance test (this->mapData, this->mapSize, 1);
+  priority_queue<point, test> queue1;
+  Distance test (this->mapData, this->mapSize, 2);
+  priority_queue<point, test> queue2;
+  Distance test (this->mapData, this->mapSize, 3);
+  priority_queue<point, test> queue3;
+
 
 }
 

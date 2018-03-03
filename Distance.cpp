@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <stdlib.h> //abs
 
 using namespace std;
 
@@ -16,11 +18,14 @@ struct point {
 class Distance {
   public:
     Distance(char** inputMap, int inputSize, int inputMode);
-    ~Distance();
+    int ManhattanCalcDistance(point initial, point goal);
+    double getDistance();
+
+
 
     bool operator() (const point& lhs, const point& rhs) const
     {
-      // depending on mode, evaluate lhs and rhs 
+      // depending on mode, evaluate lhs and rhs
       // if lhs is closer to the goal
       //   return true
       // else
@@ -33,6 +38,13 @@ class Distance {
     int mode;
     point current;
     point goal;
+    point initial;
+
+
+    //Manhattan
+    int distance;
+    int exes;
+    int whys;
 
     void loadMap(char** inputMap, int inputSize);
     double euclidean(char** inputMap, int inputSize);
@@ -45,8 +57,6 @@ Distance::Distance(char** inputMap, int inputSize, int inputMode) {
   this->mode = inputMode;
 }
 
-Distance::~Distance() {
-}
 
 void Distance::loadMap(char** inputMap, int inputSize){
   this->mapSize = inputSize;
@@ -65,17 +75,11 @@ void Distance::loadMap(char** inputMap, int inputSize){
   }
 }
 
-double Euclidean::getDistance(){
-  int* hello = new int(5);
-  cout << "Map loaded successfully!" << endl;
-  cout << " 0123456789" << endl;
-  for (int i = 0; i < this->mapSize; ++i) {
-    cout << to_string(i);
-    for (int j = 0; j < this->mapSize; ++j) {
-      cout << mapData[i][j];
-    }
-    cout << endl;
-  }
-  printf("Initial: (%i,%i)\nGoal: (%i,%i)\n", this->initial.x, this->initial.y, this->goal.x, this->goal.y);
-  return hello;
+
+
+int Distance::ManhattanCalcDistance(point initial, point goal){
+  exes = abs(this->goal.x-this->initial.x);
+  whys = abs(this->goal.y-this->initial.y);
+  this->distance = this->exes+this->whys;
+  return this->distance;
 }

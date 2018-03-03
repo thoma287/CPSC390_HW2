@@ -7,13 +7,10 @@
 #include <vector>
 #include <string>
 #include <stdlib.h>     /* abs */
+#include "Distance.cpp"
+
 
 using namespace std;
-
-struct state {
-  int x;
-  int y;
-};
 
 
 class Manhattan{
@@ -23,13 +20,14 @@ public:
 
   Manhattan(vector< vector < char > > inputMap, int mapSize);
   ~Manhattan();
-  int calcDistance(state initial, state goal);
+
+  int calcDistance(point initial, point goal);
   int distance;
-  state initial;
-  state goal;
+  point initial;
+  point goal;
   int exes;
   int whys;
-  vector < state > obstacles;
+  vector < point > obstacles;
 
   int* getPath(char** arr);
 
@@ -38,25 +36,26 @@ public:
 };
 
 Manhattan::Manhattan(vector< vector < char > > inputMap, int mapSize){
+
   this->mapData = new char* [mapSize];
   for (int i = 0; i < mapSize; ++i) {
     this->mapData[i] = new char [mapSize];
     for (int j = 0; j < mapSize; ++j) {
       this->mapData[i][j] = inputMap[i][j];
-      if(inputMap[i][j] == 'I'){
+      if(inputMap[i][j] == 'o'){
         this->initial.x = j;
         this->initial.y = i;
         printf("Inital: (%i,%i)\n", this->initial.x,this->initial.y);
       }
 
-      if(inputMap[i][j] == 'G'){
+      if(inputMap[i][j] == 'g'){
         this->goal.x = j;
         this->goal.y = i;
 
         printf("Goal: (%i,%i)\n", this->goal.x,this->goal.y);
       }
       if(inputMap[i][j] == '+'){
-        state nipple;
+        point nipple;
         nipple.x = j;
         nipple.y = i;
         this->obstacles.push_back(nipple);
@@ -69,7 +68,7 @@ Manhattan::Manhattan(vector< vector < char > > inputMap, int mapSize){
   }
 
 }
-int Manhattan::calcDistance(state initial, state goal){
+int Manhattan::calcDistance(point initial, point goal){
   exes = abs(this->goal.x-this->initial.x);
   whys = abs(this->goal.y-this->initial.y);
   this->distance = this->exes+this->whys;
