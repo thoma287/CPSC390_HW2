@@ -25,46 +25,52 @@ struct Point {
 };
 
 class Distance {
-  public:
-    Distance(char** inputMap, int inputSize, int inputMode);
-    double getDistance();
+  char** mapData;
+  int mapSize;
+  int mode;
 
-    bool operator() (const Point& lhs, const Point& rhs) const
-    {
-      switch (mode) {
-        case 0:
-          // euclidean only
-          break;
-        case 1:
-          // manhattan only
-          break;
-        case 2:
-          // euclidean + Cost
-          break;
-        case 3:
-          // manhattan + Cost
-          break;
-        default:
-          break;
-      }
-      // depending on mode, evaluate lhs and rhs
-      // if lhs is closer to the goal
-      //   return true
-      // else
-      //   return false
+  Point goal;
+
+  void loadMap(char** inputMap, int inputSize);
+  double euclidean(Point current, bool addCost);
+  double manhattan(Point current, bool addCost);
+
+public:
+  Distance(char** inputMap, int inputSize, int inputMode);
+  double getDistance();
+
+  bool operator() (const Point& lhs, const Point& rhs) const
+  {
+    // depending on mode, evaluate lhs and rhs
+    // if lhs is closer to the goal
+    //   return true
+    // else
+    //   return false
+    switch (mode) {
+      case 0:
+        // euclidean only
+        double lhsDistance = euclidean(lhs, false);
+        double rhsDistance = euclidean(rhs, false);
+        return (lhsDistance<rhsDistance);
+      case 1:
+        // manhattan only
+        double lhsDistance = manhattan(lhs, false);
+        double rhsDistance = manhattan(rhs, false);
+        return (lhsDistance<rhsDistance);
+      case 2:
+        // euclidean + Cost
+        double lhsDistance = euclidean(lhs, true);
+        double rhsDistance = euclidean(rhs, true);
+        return (lhsDistance<rhsDistance);
+      case 3:
+        // manhattan + Cost
+        double lhsDistance = manhattan(lhs, true);
+        double rhsDistance = manhattan(rhs, true);
+        return (lhsDistance<rhsDistance);
+      default:
+        break;
     }
-
-  private:
-    char** mapData;
-    int mapSize;
-    int mode;
-
-    Point goal;
-
-    void loadMap(char** inputMap, int inputSize);
-    double euclidean(Point current, bool addCost);
-    double manhattan(Point current, bool addCost);
-
+  }
 };
 
 Distance::Distance(char** inputMap, int inputSize, int inputMode) {
