@@ -23,7 +23,7 @@ public:
 };
 
 Robot::Robot() {
-  
+
 }
 
 Robot::~Robot() {
@@ -43,14 +43,17 @@ void Robot::run() {
 
   // run calculations
   for (int i = 0; i < 4; i++) {
-    SuperQueue pathTree (Distance(this->mapData, this->mapSize, i));
+    cerr << "A" << endl;
+    SuperQueue pathTree (Distance(this->goal, i));
+    cerr << "B" << endl;
     pathTree.push(initial);
+    cerr << "C" << endl;
     char** finalPath = this->recursiveBFS(this->makeMapCopy(this->mapData, this->mapSize), pathTree, 0);
 
     cout << "Path for mode " << to_string(i) << endl;
     for (int k = 0; k < mapSize; ++k) {
       for (int j = 0; j < mapSize; ++j) {
-        cout << mapData[k][j];
+        cout << finalPath[k][j];
       }
       cout << endl;
     }
@@ -76,6 +79,7 @@ void Robot::loadMap(vector< vector < char > > inputMap, int inputSize){
 }
 
 char** Robot::makeMapCopy(char** map, int size) {
+  cerr << "D" << endl;
   char** output = new char* [size];
   for (int i = 0; i < size; ++i) {
     output[i] = new char [size];
@@ -83,18 +87,34 @@ char** Robot::makeMapCopy(char** map, int size) {
       output[i][j] = map[i][j];
     }
   }
+  cerr << "E" << endl;
   return output;
 }
 
 char** Robot::recursiveBFS(char** previousState, SuperQueue pathTree, int cost) {
+  cerr << "F" << endl;
   Point current = pathTree.top();
+  cerr << "CURRENT: (" << current.x << "," << current.y << ") cost: " << cost << endl;
   if (previousState[current.y][current.x] == 'g') {
     this->finalCost = cost;
     return previousState;
   }
+  if (cost > 15) {
+    this->finalCost = cost;
+    return previousState;
+  }
+  cerr << "G" << endl;
   if (previousState[current.y][current.x] == '.') {
     previousState[current.y][current.x] = 'o';
   }
+  /*for (int k = 0; k < this->mapSize; ++k) {
+    for (int j = 0; j < this->mapSize; ++j) {
+      cerr << previousState[k][j];
+    }
+    cerr << endl;
+  }
+  cerr << endl;*/
+  cerr << "H" << endl;
   cost += 1;
   if (this->checkSpot(previousState, Point(current.x-1, current.y, cost))) {
     pathTree.push(Point(current.x-1, current.y, cost));
@@ -108,6 +128,7 @@ char** Robot::recursiveBFS(char** previousState, SuperQueue pathTree, int cost) 
   if (this->checkSpot(previousState, Point(current.x, current.y+1, cost))) {
     pathTree.push(Point(current.x, current.y+1, cost));
   }
+  cerr << "I" << endl;
   return this->recursiveBFS(previousState, pathTree, cost);
 }
 

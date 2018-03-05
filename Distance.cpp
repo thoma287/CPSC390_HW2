@@ -25,19 +25,15 @@ struct Point {
 };
 
 class Distance {
-  char** mapData;
-  int mapSize;
   int mode;
-
   Point goal;
 
-  void loadMap(char** inputMap, int inputSize);
   double euclidean(Point current, bool addCost) const;
   double manhattan(Point current, bool addCost) const;
 
 public:
-  Distance(char** inputMap, int inputSize, int inputMode);
-  double getDistance();
+  Distance(Point inputGoal, int inputMode);
+  ~Distance();
 
   bool operator() (const Point& lhs, const Point& rhs) const
   {
@@ -52,7 +48,9 @@ public:
       case 0:
         // euclidean only
         lhsDistance = this->euclidean(lhs, false);
+        cerr << "LHS DIST: " << lhsDistance << " LHS COOD: (" << lhs.x << "," << lhs.y << ")" << endl;
         rhsDistance = this->euclidean(rhs, false);
+        cerr << "RHS DIST: " << rhsDistance << " RHS COOD: (" << rhs.x << "," << rhs.y << ")" << endl;
         return (lhsDistance<rhsDistance);
       case 1:
         // manhattan only
@@ -75,22 +73,12 @@ public:
   }
 };
 
-Distance::Distance(char** inputMap, int inputSize, int inputMode) {
-  this->loadMap(inputMap, inputSize);
+Distance::Distance(Point inputGoal, int inputMode) {
+  this->goal = inputGoal;
   this->mode = inputMode;
 }
 
-
-void Distance::loadMap(char** inputMap, int inputSize){
-  this->mapSize = inputSize;
-  this->mapData = inputMap;
-  for (int i = 0; i < inputSize; ++i) {
-    for (int j = 0; j < inputSize; ++j) {
-      if(inputMap[i][j] == 'g'){
-        this->goal = Point(j, i, 0);
-      }
-    }
-  }
+Distance::~Distance() {
 }
 
 double Distance::manhattan(Point current, bool addCost) const {
