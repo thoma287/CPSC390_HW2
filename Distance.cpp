@@ -2,29 +2,51 @@
 //    length of straight line between 2 options
 //    E((i,j),(i',j')) = sqrt[(i-i')^2+(j-j')^2]
 
-
-#include <iostream>
 #include <vector>
-#include <string>
 #include <stdlib.h> //abs
+#include <math.h>   //sqrt
 
 using namespace std;
 
-struct point {
+struct Point {
   int x;
   int y;
+  int cost;
+  Point() {
+    x = 0;
+    y = 0;
+    cost = 0;
+  }
+  Point(int _x, int _y, int _cost) {
+    x = _x;
+    y = _y;
+    cost = _cost;
+  }
 };
 
 class Distance {
   public:
     Distance(char** inputMap, int inputSize, int inputMode);
-    int ManhattanCalcDistance(point initial, point goal);
     double getDistance();
 
-
-
-    bool operator() (const point& lhs, const point& rhs) const
+    bool operator() (const Point& lhs, const Point& rhs) const
     {
+      switch (mode) {
+        case 0:
+          // euclidean only
+          break;
+        case 1:
+          // manhattan only
+          break;
+        case 2:
+          // euclidean + Cost
+          break;
+        case 3:
+          // manhattan + Cost
+          break;
+        default:
+          break;
+      }
       // depending on mode, evaluate lhs and rhs
       // if lhs is closer to the goal
       //   return true
@@ -36,19 +58,12 @@ class Distance {
     char** mapData;
     int mapSize;
     int mode;
-    point current;
-    point goal;
-    point initial;
 
-
-    //Manhattan
-    int distance;
-    int exes;
-    int whys;
+    Point goal;
 
     void loadMap(char** inputMap, int inputSize);
-    double euclidean(char** inputMap, int inputSize);
-    double manhattan(char** inputMap, int inputSize);
+    double euclidean(Point current, bool addCost);
+    double manhattan(Point current, bool addCost);
 
 };
 
@@ -63,23 +78,29 @@ void Distance::loadMap(char** inputMap, int inputSize){
   this->mapData = inputMap;
   for (int i = 0; i < inputSize; ++i) {
     for (int j = 0; j < inputSize; ++j) {
-      if(inputMap[i][j] == 'x'){
-        this->current.x = j;
-        this->current.y = i;
-      }
-      if(inputMap[i][j] == 'i'){
-        this->goal.x = j;
-        this->goal.y = i;
+      if(inputMap[i][j] == 'g'){
+        this->goal = Point(j, i, 0);
       }
     }
   }
 }
 
+double Distance::manhattan(Point current, bool addCost) {
+  int exes = abs(this->goal.x-current.x);
+  int whys = abs(this->goal.y-current.y);
+  int output = exes+whys;
+  if (addCost) {
+    output += current.cost;
+  }
+  return (double) output;
+}
 
-
-int Distance::ManhattanCalcDistance(point initial, point goal){
-  exes = abs(this->goal.x-this->initial.x);
-  whys = abs(this->goal.y-this->initial.y);
-  this->distance = this->exes+this->whys;
-  return this->distance;
+double Distance::euclidian(Point current, bool addCost) {
+  double exes = (double) abs(this->goal.x-current.x);
+  double whys = (double) abs(this->goal.y-current.y);
+  double output = sqrt (pow(exes,2) + pow(whys,2));
+  if (addCost) {
+    output += (double) current.cost;
+  }
+  return output;
 }

@@ -1,5 +1,3 @@
-#include <iostream>
-#include <vector>
 #include "Distance.cpp"
 
 using namespace std;
@@ -26,28 +24,20 @@ class Robot {
     void loadMap(vector< vector < char > > inputMap, int inputSize);
     void run();
 
-    int calcDistance(point initial, point goal);
+    int calcDistance(Point initial, Point goal);
 
   private:
     char** mapData;
     int mapSize;
 
-    point current;
-    point goal;
+    Point current;
+    Point goal;
 
 };
 
 void Robot::run() {
-  Distance test (this->mapData, this->mapSize, 0);
-  priority_queue<point, test> queue0;
-  Distance test (this->mapData, this->mapSize, 1);
-  priority_queue<point, test> queue1;
-  Distance test (this->mapData, this->mapSize, 2);
-  priority_queue<point, test> queue2;
-  Distance test (this->mapData, this->mapSize, 3);
-  priority_queue<point, test> queue3;
-
-
+  typedef priority_queue<Point, vector<Point>, Distance> SuperQueue;
+  SuperQueue queue0 ();
 }
 
 void Robot::loadMap(vector< vector < char > > inputMap, int inputSize){
@@ -57,13 +47,11 @@ void Robot::loadMap(vector< vector < char > > inputMap, int inputSize){
     this->mapData[i] = new char [inputSize];
     for (int j = 0; j < inputSize; ++j) {
       this->mapData[i][j] = inputMap[i][j];
-      if(inputMap[i][j] == 'O'){
-        this->current.x = j;
-        this->current.y = i;
+      if(inputMap[i][j] == 'i'){
+        this->initial = Point(j, i, 0);
       }
-      if(inputMap[i][j] == 'G'){
-        this->goal.x = j;
-        this->goal.y = i;
+      if(inputMap[i][j] == 'g'){
+        this->goal = Point(j, i, 0);
       }
     }
   }
