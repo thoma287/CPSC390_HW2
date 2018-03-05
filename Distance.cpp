@@ -51,7 +51,7 @@ public:
         cerr << "LHS DIST: " << lhsDistance << " LHS COOD: (" << lhs.x << "," << lhs.y << ")" << endl;
         rhsDistance = this->euclidean(rhs, false);
         cerr << "RHS DIST: " << rhsDistance << " RHS COOD: (" << rhs.x << "," << rhs.y << ")" << endl;
-        return (lhsDistance<rhsDistance);
+        return (lhsDistance>rhsDistance);
       case 1:
         // manhattan only
         lhsDistance = this->manhattan(lhs, false);
