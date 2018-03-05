@@ -68,7 +68,7 @@ public:
         double rhsDistance = manhattan(rhs, true);
         return (lhsDistance<rhsDistance);
       default:
-        break;
+        return true;
     }
   }
 };
