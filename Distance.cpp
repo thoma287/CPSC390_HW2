@@ -32,8 +32,8 @@ class Distance {
   Point goal;
 
   void loadMap(char** inputMap, int inputSize);
-  double euclidean(Point current, bool addCost);
-  double manhattan(Point current, bool addCost);
+  double euclidean(Point current, bool addCost) const;
+  double manhattan(Point current, bool addCost) const;
 
 public:
   Distance(char** inputMap, int inputSize, int inputMode);
@@ -46,26 +46,28 @@ public:
     //   return true
     // else
     //   return false
+    double lhsDistance;
+    double rhsDistance;
     switch (mode) {
       case 0:
         // euclidean only
-        double lhsDistance = euclidean(lhs, false);
-        double rhsDistance = euclidean(rhs, false);
+        lhsDistance = this->euclidean(lhs, false);
+        rhsDistance = this->euclidean(rhs, false);
         return (lhsDistance<rhsDistance);
       case 1:
         // manhattan only
-        double lhsDistance = manhattan(lhs, false);
-        double rhsDistance = manhattan(rhs, false);
+        lhsDistance = this->manhattan(lhs, false);
+        rhsDistance = this->manhattan(rhs, false);
         return (lhsDistance<rhsDistance);
       case 2:
         // euclidean + Cost
-        double lhsDistance = euclidean(lhs, true);
-        double rhsDistance = euclidean(rhs, true);
+        lhsDistance = this->euclidean(lhs, true);
+        rhsDistance = this->euclidean(rhs, true);
         return (lhsDistance<rhsDistance);
       case 3:
         // manhattan + Cost
-        double lhsDistance = manhattan(lhs, true);
-        double rhsDistance = manhattan(rhs, true);
+        lhsDistance = this->manhattan(lhs, true);
+        rhsDistance = this->manhattan(rhs, true);
         return (lhsDistance<rhsDistance);
       default:
         return true;
@@ -91,7 +93,7 @@ void Distance::loadMap(char** inputMap, int inputSize){
   }
 }
 
-double Distance::manhattan(Point current, bool addCost) {
+double Distance::manhattan(Point current, bool addCost) const {
   int exes = abs(this->goal.x-current.x);
   int whys = abs(this->goal.y-current.y);
   int output = exes+whys;
@@ -101,7 +103,7 @@ double Distance::manhattan(Point current, bool addCost) {
   return (double) output;
 }
 
-double Distance::euclidian(Point current, bool addCost) {
+double Distance::euclidean(Point current, bool addCost) const {
   double exes = (double) abs(this->goal.x-current.x);
   double whys = (double) abs(this->goal.y-current.y);
   double output = sqrt (pow(exes,2) + pow(whys,2));

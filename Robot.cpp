@@ -1,4 +1,5 @@
 #include "Distance.cpp"
+#include <queue>
 
 using namespace std;
 
@@ -20,6 +21,14 @@ public:
   char** recursiveBFS(char** previousState, SuperQueue pathTree, int cost);
   bool checkSpot(char** previousState, Point spot);
 };
+
+Robot::Robot() {
+  
+}
+
+Robot::~Robot() {
+  delete this->mapData;
+}
 
 void Robot::run() {
   // dusplay input map
@@ -69,8 +78,8 @@ void Robot::loadMap(vector< vector < char > > inputMap, int inputSize){
 char** Robot::makeMapCopy(char** map, int size) {
   char** output = new char* [size];
   for (int i = 0; i < size; ++i) {
-    output[i] = new char [inputSize];
-    for (int j = 0; j < inputSize; ++j) {
+    output[i] = new char [size];
+    for (int j = 0; j < size; ++j) {
       output[i][j] = map[i][j];
     }
   }

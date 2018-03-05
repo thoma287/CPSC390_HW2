@@ -59,9 +59,9 @@ int main(int argc, char *argv[]) {
             }
           }
           // do stuff with mapData
-          Robot roboCop ();
-          roboCop.loadMap(mapData, mapSize);
-          roboCop.run();
+          Robot* roboCop = new Robot();
+          roboCop->loadMap(mapData, mapSize);
+          roboCop->run();
         }
       } catch (const exception& e) {
         cerr << "Invalid file format." << endl;
