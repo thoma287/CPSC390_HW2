@@ -56,17 +56,17 @@ public:
         // manhattan only
         lhsDistance = this->manhattan(lhs, false);
         rhsDistance = this->manhattan(rhs, false);
-        return (lhsDistance<rhsDistance);
+        return (lhsDistance>rhsDistance);
       case 2:
         // euclidean + Cost
         lhsDistance = this->euclidean(lhs, true);
         rhsDistance = this->euclidean(rhs, true);
-        return (lhsDistance<rhsDistance);
+        return (lhsDistance>rhsDistance);
       case 3:
         // manhattan + Cost
         lhsDistance = this->manhattan(lhs, true);
         rhsDistance = this->manhattan(rhs, true);
-        return (lhsDistance<rhsDistance);
+        return (lhsDistance>rhsDistance);
       default:
         return true;
     }
