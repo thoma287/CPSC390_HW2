@@ -9,13 +9,14 @@ class Robot {
   int mapSize;
   Point initial;
   Point goal;
+  int finalNodes;
 
 public:
   Robot();
   ~Robot();
 
   void run();
-  void loadMap(vector< vector < char > > inputMap, int inputSize);
+  void loadMap(char** inputMap, int inputSize);
   char** makeMapCopy(char** map, int size);
   SuperQueue recursiveBFS(char** previousState, SuperQueue pathTree);
   bool checkSpot(char** previousState, Point spot);
@@ -48,36 +49,38 @@ void Robot::run() {
     pathTree.push(initial);
     //cerr << "C" << endl;
     SuperQueue finalPath = this->recursiveBFS(this->makeMapCopy(this->mapData, this->mapSize), pathTree);
-
-    cout << "Path for mode " << to_string(i) << endl;
-    Point pt = finalPath.top();
-    Point* current = &pt;
-    int finalCost = finalPath.top().cost;
-    char** temp = this->makeMapCopy(this->mapData, this->mapSize);
-    while (true) {
-      if (!current->parent) {
-        break;
+    if (finalPath.empty()) {
+      cout << "This map is invalid. There is no path from i to g." << endl;
+      return;
+    } else {
+      cout << "Path for mode " << to_string(i) << endl;
+      Point pt = finalPath.top();
+      Point* current = pt.parent;
+      int finalCost = finalPath.top().cost;
+      char** temp = this->makeMapCopy(this->mapData, this->mapSize);
+      while (true) {
+        if (!current->parent) {
+          break;
+        }
+        temp[current->y][current->x] = 'o';
+        current = current->parent;
       }
-      temp[current->y][current->x] = 'o';
-      current = current->parent;
-    }
-    for (int k = 0; k < mapSize; ++k) {
-      for (int j = 0; j < mapSize; ++j) {
-        cout << temp[k][j];
+      for (int k = 0; k < mapSize; ++k) {
+        for (int j = 0; j < mapSize; ++j) {
+          cout << temp[k][j];
+        }
+        cout << endl;
       }
-      cout << endl;
+      cout << "Steps Taken: " << to_string(finalCost) << endl << "Number of nodes: " << finalPath.size() << endl << endl;
     }
-    cout << "Cost: " << to_string(finalCost) << endl << endl;
   }
 }
 
-void Robot::loadMap(vector< vector < char > > inputMap, int inputSize){
+void Robot::loadMap(char** inputMap, int inputSize){
   this->mapSize = inputSize;
-  this->mapData = new char* [inputSize];
+  this->mapData = this->makeMapCopy(inputMap, inputSize);
   for (int i = 0; i < inputSize; ++i) {
-    this->mapData[i] = new char [inputSize];
     for (int j = 0; j < inputSize; ++j) {
-      this->mapData[i][j] = inputMap[i][j];
       if(inputMap[i][j] == 'i'){
         this->initial = Point(j, i, 0, NULL);
       }
@@ -102,45 +105,70 @@ char** Robot::makeMapCopy(char** map, int size) {
 }
 
 SuperQueue Robot::recursiveBFS(char** previousState, SuperQueue pathTree) {
-  //cerr << "F" << endl;
   Point current = pathTree.top();
-  //cerr << "CURRENT: (" << current.x << "," << current.y << ") cost: " << cost << endl;
   if (previousState[current.y][current.x] == 'g') {
+    int nodes = 2;
+    for (int k = 0; k < this->mapSize; ++k) {
+      for (int j = 0; j < this->mapSize; ++j) {
+        if (previousState[k][j] == 'o') {
+          ++nodes;
+        }
+      }
+    }
+    this->finalNodes = nodes;
     return pathTree;
   }
-  pathTree.pop();
-  /*if (cost > 15) {
-    this->finalCost = cost;
-    return previousState;
-  }*/
-  //cerr << "G" << endl;
-  //if (previousState[current.y][current.x] == '.') {
-
-  //}
-  previousState[current.y][current.x] = 'o';
-  /*for (int k = 0; k < this->mapSize; ++k) {
-    for (int j = 0; j < this->mapSize; ++j) {
-      cerr << previousState[k][j];
-    }
-    cerr << endl;
+  if (pathTree.empty()) {
+    return pathTree;
+  } else {
+    pathTree.pop();
   }
-  cerr << endl;*/
-  //cerr << "H" << endl;
+
+  previousState[current.y][current.x] = 'o';
+
+  if (current.x > 0 && previousState[current.y][current.x-1] == 'g') {
+    pathTree.push(Point(current.x-1, current.y, current.cost+1, &current));
+    return this->recursiveBFS(previousState, pathTree);
+  } else if (current.x < this->mapSize-1 && previousState[current.y][current.x+1] == 'g') {
+    pathTree.push(Point(current.x+1, current.y, current.cost+1, &current));
+    return this->recursiveBFS(previousState, pathTree);
+  } else if (current.y > 0 && previousState[current.y-1][current.x] == 'g') {
+    pathTree.push(Point(current.x, current.y-1, current.cost+1, &current));
+    return this->recursiveBFS(previousState, pathTree);
+  } else if (current.y < this->mapSize-1 && previousState[current.y+1][current.x] == 'g') {
+    pathTree.push(Point(current.x, current.y+1, current.cost+1, &current));
+    return this->recursiveBFS(previousState, pathTree);
+  }
+
   bool hasN = false;
+
+
   if (this->checkSpot(previousState, Point(current.x-1, current.y, current.cost+1, &current))) {
     pathTree.push(Point(current.x-1, current.y, current.cost+1, &current));
+    if (previousState[current.y][current.x-1] == 'g') {
+
+    }
     hasN = true;
   }
   if (this->checkSpot(previousState, Point(current.x+1, current.y, current.cost+1, &current))) {
     pathTree.push(Point(current.x+1, current.y, current.cost+1, &current));
+    if (previousState[current.y][current.x+1] == 'g') {
+
+    }
     hasN = true;
   }
   if (this->checkSpot(previousState, Point(current.x, current.y-1, current.cost+1, &current))) {
     pathTree.push(Point(current.x, current.y-1, current.cost+1, &current));
+    if (previousState[current.y-1][current.x] == 'g') {
+
+    }
     hasN = true;
   }
   if (this->checkSpot(previousState, Point(current.x, current.y+1, current.cost+1, &current))) {
     pathTree.push(Point(current.x, current.y+1, current.cost+1, &current));
+    if (previousState[current.y+1][current.x] == 'g') {
+
+    }
     hasN = true;
   }
   if (!hasN) {

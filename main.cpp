@@ -24,8 +24,6 @@ Cost: for every move +1
 #include <string>
 #include "Robot.cpp"
 
-
-
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -41,19 +39,21 @@ int main(int argc, char *argv[]) {
     string fileName(argv[1]);
     ifstream myfile (fileName);
 
+    cout << endl << "Artificial Intelligence: Assignment 2" << endl << "Created by Shevis Johnson and Andrew Thomas" << endl << endl;
+
     if (myfile.is_open())
     {
       try {
         if (getline (myfile,line)) {
           int mapSize = stoi(line);
-          vector< vector < char > > mapData;
+          //vector< vector < char > > mapData;
+          char** mapData = new char* [mapSize];
           for (int i = 0; i < mapSize; ++i) {
+            mapData[i] = new char [mapSize];
             if (getline (myfile,line)) {
-              vector <char> temp;
               for(string::size_type j = 0; j < line.size(); ++j) {
-                temp.push_back(line[j]);
+                mapData[i][j] = line[j];
               }
-              mapData.push_back(temp);
             } else {
               throw 1;
             }

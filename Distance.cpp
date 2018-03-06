@@ -52,9 +52,7 @@ public:
       case 0:
         // euclidean only
         lhsDistance = this->euclidean(lhs, false);
-        //cerr << "LHS DIST: " << lhsDistance << " LHS COOD: (" << lhs.x << "," << lhs.y << ")" << endl;
         rhsDistance = this->euclidean(rhs, false);
-        //cerr << "RHS DIST: " << rhsDistance << " RHS COOD: (" << rhs.x << "," << rhs.y << ")" << endl;
         return (lhsDistance>rhsDistance);
       case 1:
         // manhattan only
@@ -69,9 +67,7 @@ public:
       case 3:
         // manhattan + Cost
         lhsDistance = this->manhattan(lhs, true);
-        //cerr << "LHS DIST: " << lhsDistance << " LHS COOD: (" << lhs.x << "," << lhs.y << ")" << endl;
         rhsDistance = this->manhattan(rhs, true);
-        //cerr << "RHS DIST: " << rhsDistance << " RHS COOD: (" << rhs.x << "," << rhs.y << ")" << endl;
         return (lhsDistance>rhsDistance);
       default:
         return true;
@@ -90,9 +86,9 @@ Distance::~Distance() {
 double Distance::manhattan(Point current, bool addCost) const {
   int exes = abs(this->goal.x-current.x);
   int whys = abs(this->goal.y-current.y);
-  int output = exes+whys;
+  double output = (double) (exes+whys);
   if (addCost) {
-    output += current.cost;
+    output += ((double) current.cost);
   }
   return (double) output;
 }
@@ -102,7 +98,7 @@ double Distance::euclidean(Point current, bool addCost) const {
   double whys = (double) abs(this->goal.y-current.y);
   double output = sqrt (pow(exes,2) + pow(whys,2));
   if (addCost) {
-    output += (double) current.cost;
+    output += ((double) current.cost);
   }
   return output;
 }
