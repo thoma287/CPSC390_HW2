@@ -8,19 +8,23 @@
 
 using namespace std;
 
-struct Point {
+class Point {
+public:
   int x;
   int y;
   int cost;
+  Point* parent;
   Point() {
-    x = 0;
-    y = 0;
-    cost = 0;
+    this->x = 0;
+    this->y = 0;
+    this->cost = 0;
+    this->parent = NULL;
   }
-  Point(int _x, int _y, int _cost) {
-    x = _x;
-    y = _y;
-    cost = _cost;
+  Point(int _x, int _y, int _cost, Point *_parent) {
+    this->x = _x;
+    this->y = _y;
+    this->cost = _cost;
+    this->parent = _parent;
   }
 };
 
@@ -48,9 +52,9 @@ public:
       case 0:
         // euclidean only
         lhsDistance = this->euclidean(lhs, false);
-        cerr << "LHS DIST: " << lhsDistance << " LHS COOD: (" << lhs.x << "," << lhs.y << ")" << endl;
+        //cerr << "LHS DIST: " << lhsDistance << " LHS COOD: (" << lhs.x << "," << lhs.y << ")" << endl;
         rhsDistance = this->euclidean(rhs, false);
-        cerr << "RHS DIST: " << rhsDistance << " RHS COOD: (" << rhs.x << "," << rhs.y << ")" << endl;
+        //cerr << "RHS DIST: " << rhsDistance << " RHS COOD: (" << rhs.x << "," << rhs.y << ")" << endl;
         return (lhsDistance>rhsDistance);
       case 1:
         // manhattan only
@@ -65,7 +69,9 @@ public:
       case 3:
         // manhattan + Cost
         lhsDistance = this->manhattan(lhs, true);
+        //cerr << "LHS DIST: " << lhsDistance << " LHS COOD: (" << lhs.x << "," << lhs.y << ")" << endl;
         rhsDistance = this->manhattan(rhs, true);
+        //cerr << "RHS DIST: " << rhsDistance << " RHS COOD: (" << rhs.x << "," << rhs.y << ")" << endl;
         return (lhsDistance>rhsDistance);
       default:
         return true;
